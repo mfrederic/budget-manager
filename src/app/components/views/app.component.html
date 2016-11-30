@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>
+        {{title}}
+      </h1>
+
+      <hr />
+
+      <div class="">
+        <input [(ngModel)]="newEntry.description" #ctrl="ngModel"><br />
+        <input [(ngModel)]="newEntry.value" #ctrl="ngModel"><br />
+        <input [(ngModel)]="newEntry.date" #ctrl="ngModel"><br />
+        <input [(ngModel)]="newEntry.monthly" #ctrl="ngModel"><br />
+        <input [(ngModel)]="newEntry.endDate" #ctrl="ngModel"><br />
+        <input [(ngModel)]="newEntry.income" #ctrl="ngModel"><br />
+        <button type="button" (click)="createEntry()">Créer</button>
+      </div>
+    </div>
+  </div>
+</div>
