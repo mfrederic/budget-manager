@@ -1,19 +1,15 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <h1>
-        {{title}}
-      </h1>
-
       <hr />
 
       <div class="">
-        <input [(ngModel)]="newEntry.description" #ctrl="ngModel"><br />
-        <input [(ngModel)]="newEntry.value" #ctrl="ngModel"><br />
-        <input [(ngModel)]="newEntry.date" #ctrl="ngModel"><br />
-        <input [(ngModel)]="newEntry.monthly" #ctrl="ngModel"><br />
-        <input [(ngModel)]="newEntry.endDate" #ctrl="ngModel"><br />
-        <input [(ngModel)]="newEntry.income" #ctrl="ngModel"><br />
+        Description : <input type="text" [(ngModel)]="newEntry.description"><br />
+        Value : <input type="number" [(ngModel)]="newEntry.value"><br />
+        Date : <input type="date" [(ngModel)]="newEntry.date"><br />
+        Monthly : <input type="checkbox" [(ngModel)]="newEntry.monthly"><br />
+        End date : <input type="date" [(ngModel)]="newEntry.endDate"><br />
+        Income : <input type="checkbox" [(ngModel)]="newEntry.income"><br />
         <button type="button" (click)="createEntry()">Créer</button>
       </div>
     </div>

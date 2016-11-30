@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Entry } from '../classes/entry';
 
-import * as lodash from 'lodash';
+import * as _ from 'lodash';
 
 import { LocalStorage, SessionStorage } from "../../../node_modules/angular2-localstorage/WebStorage";
 import { i18n } from '../localization';
@@ -20,17 +20,25 @@ export class EntryService {
     return this.entries;
   }
 
-  /** Create an expense form an Entry instance */
-  createExpense(entry : Entry) : boolean {
+  /** Create an entry form an Entry instance */
+  createEntry(entry : Entry) : boolean {
     let result = false;
-    if(entry.income) {
-      throw new TypeError(i18n.WRONG_ENTRY_TYPE_EXCEPTION);
-    } else if(lodash.includes(this.entries, entry)) {
-      throw new TypeError(i18n.ENTRY_ALREADY_EXISTS_EXCEPTION);
+    if(_.find(this.entries, function(e) { return e.equals(entry) }) !== null) {
+      result = false;
     } else {
       this.entries.push(entry);
       result = true;
     }
+    console.log(this.entries);
     return result;
+  }
+
+  deleteEntry(index : number) : boolean {
+    let before : number = this.entries.length;
+    if(this.entries.splice(index, 1).length === before) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

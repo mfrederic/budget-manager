@@ -8,7 +8,7 @@ export class Entry {
   public income : boolean;
 
   constructor(pId? : number, pDescription? : string, pValue? : number, pDate? : Date, pMonthly? : boolean, pEndDate? : Date, pIncome? : boolean) {
-    this.id = pId || null;
+    this.id = pId || Math.random();
     this.description = pDescription || null;
     this.value = pValue || null;
     this.date = pDate || new Date();
@@ -22,5 +22,17 @@ export class Entry {
     if(this.id == null) {
       this.id = pId;
     }
+  }
+
+  equals(entry : Entry) : boolean {
+    let isEquals = false;
+    if(entry.description === this.description
+      && entry.value === this.value
+      && entry.date.toString() === this.date.toString()
+      && entry.monthly === this.monthly
+      && entry.endDate.toString() === this.endDate.toString()
+      && entry.income === this.income)
+      isEquals = true;
+    return isEquals;
   }
 }

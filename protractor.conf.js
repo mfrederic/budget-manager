@@ -12,6 +12,12 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome'
   },
+  map: {
+    lodash: 'node_modules/lodash/lodash.js'
+  },
+  meta: {
+    lodash: { format: 'amd' }
+  },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
