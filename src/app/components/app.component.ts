@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { i18n } from '../localization';
 import { EntryService } from '../services/entry.service';
+import { BudgetService } from '../services/budget.service';
 
 import * as _ from 'lodash';
 
@@ -11,29 +13,50 @@ import { Entry } from '../classes/entry';
 @Component({
   selector: 'app-root',
   templateUrl: './views/app.component.html',
-  providers: [EntryService]
+  providers: [EntryService, BudgetService]
 })
 export class AppComponent {
-  public entries : Entry[] = [];
+  public local : any = null;
+  public budget : Budget = null;
   public newEntry : Entry = null;
 
-  @LocalStorage('budgetList') public budgets : Budget[] = [];
+  public budgetChart : any = [];
 
-  constructor(private entryService : EntryService) {
+  constructor(private entryService : EntryService, private budgetService : BudgetService) {
+    let _this = this;
     this.newEntry = new Entry();
-    this.entries = this.entryService.getExpenses();
+    this.budgetService.getCurrentBudget().then(function(data) {
+      _this.budget = data;
+      _this.budgetChart = {labels: ['income', 'expenses'], series:[
+        _this.budgetService.getIncome(data),
+        _this.budgetService.getExpenses(data)
+      ]};
+    });
+    this.local = i18n;
   }
 
   deleteEntry(index : number) : void {
     if(this.entryService.deleteEntry(index)) {
-      this.entries.splice(index, 1);
+      this.budget.entries.splice(index, 1);
     }
   }
 
   createEntry() : void {
     if(this.entryService.createEntry(this.newEntry)) {
-      this.entries.push(this.newEntry);
+      this.budget.entries.push(this.newEntry);
       this.newEntry = new Entry();
     }
+  }
+
+  getCurrentBudgetBalance() : number {
+    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) : 0;
+  }
+
+  balanceIsPositive() : boolean {
+    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) >= 0 : true;
+  }
+
+  balanceIsNegative() : boolean {
+    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) <= 0 : false;
   }
 }

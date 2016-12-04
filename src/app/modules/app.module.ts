@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { NavigationComponent } from '../components/navigation.component';
 import { AppComponent } from '../components/app.component';
+import { ChartComponent } from '../components/chart.component';
+import { LastEntryComponent } from '../components/last-entry.component';
 
 import { LocalStorageService } from '../../../node_modules/angular2-localstorage/LocalStorageEmitter';
 import { SettingsService } from '../services/settings.service';
@@ -12,7 +14,9 @@ import { SettingsService } from '../services/settings.service';
 @NgModule({
   declarations: [
     NavigationComponent,
-    AppComponent
+    AppComponent,
+    ChartComponent,
+    LastEntryComponent
   ],
   imports: [
     BrowserModule,

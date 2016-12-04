@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { i18n } from '../localization'
+import { i18n } from '../localization';
 import { MenuItem } from '../classes/menu-item';
 
 @Component({

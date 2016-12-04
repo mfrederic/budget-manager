@@ -1,0 +1,25 @@
+<div class="card text-xs">
+  <div class="card-header">{{local.LAST_OPERATIONS}}</div>
+  <div class="card-block">
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>{{local.DESCRIPTION}}</th>
+          <th>{{local.DATE}}</th>
+          <th>{{local.VALUE}}</th>
+          <th>{{local.MONTHLY}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of budget.entries;">
+          <td>{{entry.description}}</td>
+          <td>{{moment(entry.date).format('DD/MM')}}</td>
+          <td>{{entry.value}}{{local.CURRENCY}}</td>
+          <td>{{entry.monthly}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer">
+  </div>
+</div>

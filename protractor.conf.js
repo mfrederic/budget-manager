@@ -13,7 +13,9 @@ exports.config = {
     'browserName': 'chrome'
   },
   map: {
-    lodash: 'node_modules/lodash/lodash.js'
+    lodash: 'node_modules/lodash/lodash.js',
+    moment: 'node_modules/angular2-moment/moment.js',
+    chartsit: 'node_modules/chartist/underscore.js'
   },
   meta: {
     lodash: { format: 'amd' }

@@ -1,5 +1,16 @@
 body {
   background: #2c3e50;
   font-family: Open Sans;
-  color: #ecf0f1;
+}
+
+.container .row + .row {
+  margin-top: 1rem;
+}
+
+.ct-series-a .ct-slice-donut {
+  stroke: rgb(46, 204, 113);
+}
+
+.ct-series-b .ct-slice-donut{
+  stroke: rgb(231, 76, 60);
 }
