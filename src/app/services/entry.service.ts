@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Entry } from '../classes/entry';
 import { Budget } from '../classes/budget';
 
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { LocalStorage, SessionStorage } from "../../../node_modules/angular2-localstorage/WebStorage";
@@ -17,15 +18,36 @@ export class EntryService {
     this.entries = [];
   }
 
-  getExpenses() : Entry[] {
+  getEntries() : Entry[] {
     return this.entries;
+  }
+
+  getEntriesBetween(pStartDate : Date, pEndDate : Date) : Entry[] {
+    let sortEntries = _.sortBy(this.entries, (entry) => { return entry.date; });
+    let begin : boolean = false;
+    let response : Entry[] = [];
+    sortEntries.forEach((entry, index) => {
+      let entryDate = moment(entry.date);
+      begin = entryDate.isSameOrAfter(moment(pStartDate));
+      if(begin) {
+        begin = entryDate.isSameOrBefore(moment(pEndDate))
+        response.push(entry);
+      } else if(entry.monthly) {
+        response.push(entry);
+      }
+    });
+    return response;
   }
 
   /** Create an entry form an Entry instance */
   createEntry(entry : Entry) : boolean {
+    let _this = this;
     let result = false;
-    if(_.find(this.entries, function(e) { return this.equals(e, entry) }) !== null) {
-      result = false;
+    if(!_.isEmpty(_.find(this.entries, function(e) { return _this.equals(e, entry) }))) {
+      console.error("Already existing entry");
+    } else if(_.isEmpty(entry.value) || !moment(entry.date).isValid()) {
+      console.log(_.isEmpty(entry.value), _.isEmpty(entry.date));
+      console.error("Some informations are missing");
     } else {
       this.entries.push(entry);
       result = true;
@@ -40,15 +62,6 @@ export class EntryService {
       return false;
     } else {
       return true;
-    }
-  }
-
-  addToBudget(pEntry : Entry, pBudget : Budget) : void {
-    let index : number = _.findIndex(this.entries, (entry) => {
-      return entry.id === pEntry.id;
-    });
-    if(index !== -1) {
-      this.entries[index].budget = pBudget;
     }
   }
 

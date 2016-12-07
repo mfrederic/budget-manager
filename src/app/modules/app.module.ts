@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { NavigationComponent } from '../components/navigation.component';
 import { AppComponent } from '../components/app.component';
-import { ChartComponent } from '../components/chart.component';
+import { BalanceComponent } from '../components/balance.component';
 import { LastEntryComponent } from '../components/last-entry.component';
 
 import { LocalStorageService } from '../../../node_modules/angular2-localstorage/LocalStorageEmitter';
@@ -15,7 +15,7 @@ import { SettingsService } from '../services/settings.service';
   declarations: [
     NavigationComponent,
     AppComponent,
-    ChartComponent,
+    BalanceComponent,
     LastEntryComponent
   ],
   imports: [

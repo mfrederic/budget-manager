@@ -63,24 +63,50 @@ export class BudgetService {
   }
 
   getIncome(pBudget : Budget) : number {
-    return 1000;
-  }
-
-  getExpenses(pBudget : Budget) : number {
-    return 800;
-  }
-
-  getBalance(pBudget : Budget) : number {
-    let balance = 0;
+    let income : number = 0;
     if(!_.isEmpty(pBudget)) {
       pBudget.entries.forEach(function(entry, index) {
         if(entry.income) {
-          balance += entry.value;
+          let value = parseFloat(entry.value.toString());
+          income += value;
+        }
+      });
+    }
+    return income;
+  }
+
+  getExpenses(pBudget : Budget) : number {
+    let expense : number = 0;
+    if(!_.isEmpty(pBudget)) {
+      pBudget.entries.forEach(function(entry, index) {
+        if(!entry.income) {
+          let value = parseFloat(entry.value.toString());
+          expense += value;
+        }
+      });
+    }
+    return expense;
+  }
+
+  getBalance(pBudget : Budget) : number {
+    let balance : number = 0;
+    if(!_.isEmpty(pBudget)) {
+      pBudget.entries.forEach(function(entry, index) {
+        let value = parseFloat(entry.value.toString());
+        if(entry.income) {
+          balance += value;
         } else {
-          balance -= entry.value;
+          balance -= value;
         }
       });
     }
     return balance;
+  }
+
+  entryIsInTheBudget(date : Date, budget : Budget) {
+    let momentDate = moment(date);
+    let startDate = moment(budget.startDate);
+    let endDate = moment(budget.endDate);
+    return (momentDate.isSameOrAfter(startDate) && momentDate.isSameOrBefore(endDate));
   }
 }

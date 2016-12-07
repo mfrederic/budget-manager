@@ -12,7 +12,8 @@ export class NavigationComponent {
 
   constructor() {
     this.items.push(new MenuItem(null, 'HOME', '#/', null));
-    this.items.push(new MenuItem(null, 'PROJECTS', '#/project', null));
+    this.items.push(new MenuItem(null, 'BUDGETS', '#/budgets', null));
+    this.items.push(new MenuItem(null, 'PROJECTS', '#/projects', null));
     this.local = i18n;
   }
 }

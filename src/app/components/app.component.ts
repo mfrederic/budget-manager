@@ -3,6 +3,7 @@ import { i18n } from '../localization';
 import { EntryService } from '../services/entry.service';
 import { BudgetService } from '../services/budget.service';
 
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { LocalStorage, SessionStorage } from "../../../node_modules/angular2-localstorage/WebStorage";
@@ -19,6 +20,7 @@ export class AppComponent {
   public local : any = null;
   public budget : Budget = null;
   public newEntry : Entry = null;
+  public newEntryDate : string = null;
 
   public budgetChart : any = [];
 
@@ -27,10 +29,6 @@ export class AppComponent {
     this.newEntry = new Entry();
     this.budgetService.getCurrentBudget().then(function(data) {
       _this.budget = data;
-      _this.budgetChart = {labels: ['income', 'expenses'], series:[
-        _this.budgetService.getIncome(data),
-        _this.budgetService.getExpenses(data)
-      ]};
     });
     this.local = i18n;
   }
@@ -42,21 +40,13 @@ export class AppComponent {
   }
 
   createEntry() : void {
+    this.newEntry.date = moment(this.newEntryDate, this.local.DATE_FORMAT).toDate();
     if(this.entryService.createEntry(this.newEntry)) {
-      this.budget.entries.push(this.newEntry);
+      if(this.budgetService.entryIsInTheBudget(this.newEntry.date, this.budget)) {
+        this.budget.entries.push(this.newEntry);
+      }
       this.newEntry = new Entry();
+      this.newEntryDate = null;
     }
-  }
-
-  getCurrentBudgetBalance() : number {
-    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) : 0;
-  }
-
-  balanceIsPositive() : boolean {
-    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) >= 0 : true;
-  }
-
-  balanceIsNegative() : boolean {
-    return (this.budget !== null) ? this.budgetService.getBalance(this.budget) <= 0 : false;
   }
 }

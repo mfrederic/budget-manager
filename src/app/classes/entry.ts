@@ -1,4 +1,5 @@
 import { Budget } from './budget';
+import { i18n } from '../localization';
 
 export class Entry {
   public id : number;
@@ -8,16 +9,14 @@ export class Entry {
   public monthly : boolean;
   public endDate : Date;
   public income : boolean;
-  public budget : Budget;
 
   constructor(pId? : number, pDescription? : string, pValue? : number, pDate? : Date, pMonthly? : boolean, pEndDate? : Date, pIncome? : boolean, pBudget? : Budget) {
     this.id = pId || Math.random();
     this.description = pDescription || null;
     this.value = pValue || null;
     this.date = pDate || new Date();
-    this.monthly = pMonthly || null;
+    this.monthly = pMonthly || false;
     this.endDate = pEndDate || null;
-    this.income = pIncome || null;
-    this.budget = pBudget || null;
+    this.income = pIncome || false;
   }
 }
