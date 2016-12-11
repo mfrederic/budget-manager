@@ -3,7 +3,7 @@ import * as moment from 'moment';
 export const i18n = {
   BALANCE: 'Balance',
   BUDGET_DEFAULT_DESCRIPTION: 'Budget du mois de ' + moment().format('MMMM'),
-  BUDGET: 'Budgets',
+  BUDGETS: 'Budgets',
   CREATE: 'Créer',
   CREATE_NEW_ENTRY: 'Créer une nouvelle entrée',
   CURRENCY: '€',

@@ -12,11 +12,10 @@ import { Budget } from '../classes/budget';
 import { Entry } from '../classes/entry';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './views/app.component.html',
+  templateUrl: './views/dashboard.component.html',
   providers: [EntryService, BudgetService]
 })
-export class AppComponent {
+export class DashboardComponent {
   public local : any = null;
   public budget : Budget = null;
   public newEntry : Entry = null;
