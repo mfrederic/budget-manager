@@ -1,5 +1,6 @@
 <div class="card text-xs">
-  <div class="card-header">{{local.LAST_OPERATIONS}}</div>
+  <div class="card-header">{{local.LAST_OPERATIONS}}
+    <ngbd-modal-new-entry></ngbd-modal-new-entry></div>
   <div class="card-block">
     <table class="table table-stripped table-sm">
       <thead>
@@ -8,7 +9,7 @@
           <th>{{local.DATE}}</th>
           <th>{{local.VALUE}}</th>
           <th></th>
-          <th title="{{local.MONTHLY}}"><i class="fa fa-repeat"></i></th>
+          <th title="{{local.MONTHLY}}"></th>
         </tr>
       </thead>
       <tbody>
@@ -17,7 +18,7 @@
           <td>{{moment(entry.date).format('DD/MM')}}</td>
           <td>{{entry.value}}{{local.CURRENCY}}</td>
           <td><i [ngClass]="{'fa-arrow-up' : entry.income, 'fa-arrow-down' : !entry.income}" class="fa" aria-hidden="true"></i></td>
-          <td><i [ngClass]="{'fa-check' : entry.monthly, 'fa-times' : !entry.monthly}" class="fa" aria-hidden="true"></i></td>
+          <td><i [ngClass]="{'fa-repeat' : entry.monthly}" *ngIf="entry.monthly" class="fa" aria-hidden="true" title="{{local.MONTHLY}}"></i></td>
         </tr>
       </tbody>
     </table>
@@ -25,3 +26,5 @@
   <div class="card-footer">
   </div>
 </div>
+
+<template ngbModalContainer></template>

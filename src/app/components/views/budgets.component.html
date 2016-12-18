@@ -1,0 +1,28 @@
+<div class="row" *ngIf="budgets.length > 0">
+  <div class="col-xs-12">
+    <div class="card text-xs">
+      <div class="card-header">{{local.BUDGETS}}</div>
+      <div class="card-block">
+        <table class="table table-stripped table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{local.DESCRIPTION}}</th>
+              <th>{{local.START_DATE}}</th>
+              <th>{{local.BALANCE}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let budget of budgets;">
+              <td>{{budget.id}}</td>
+              <td><a title="{{local.MORE_INFORMATIONS}}" routerLink="/budgets/{{budget.id}}">{{budget.description}}</a></td>
+              <td>{{moment(budget.startDate).format('DD/MM')}}</td>
+              <td>{{getBudgetBalance(budget.id)}} {{local.CURRENCY}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer"></div>
+    </div>
+  </div>
+</div>

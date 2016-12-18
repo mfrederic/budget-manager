@@ -1,0 +1,58 @@
+<template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{local.CREATE_NEW_ENTRY}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-{{notification.type}}" *ngIf="notification.type">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{notification.message}}
+    </div>
+    <div class="form">
+      <div class="form-group row">
+        <label for="entry-description" class="col-xs-3 col-form-label">{{local.DESCRIPTION}} {{local.REQUIRED_MARK}}</label>
+        <div class="col-xs-9">
+          <input [(ngModel)]="entry.description" class="form-control"
+            type="text" placeholder="{{local.ENTRY_DEFAULT_DESCRIPTION}}" id="entry-description">
+        </div>
+      </div>
+      <div class="form-group row">
+          <label for="entry-date" class="col-xs-3 col-form-label">{{local.DATE}} {{local.REQUIRED_MARK}}</label>
+          <div class="col-xs-9">
+            <input (click)="d.toggle()" [(ngModel)]="entryDate" class="form-control"
+              type="text" placeholder="{{local.CURRENT_DATE}}" id="entry-date" ngbDatepicker #d="ngbDatepicker">
+          </div>
+      </div>
+      <div class="form-group row">
+        <label for="entry-value" class="col-xs-3 col-form-label">{{local.VALUE}} {{local.REQUIRED_MARK}}</label>
+        <div class="col-xs-9">
+          <input [(ngModel)]="entry.value" class="form-control"
+            type="number" placeholder="{{local.EXAMPLE}}: {{local.EXAMPLE_VALUE}}" id="entry-value">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-xs-6">
+          <label for="entry-monthly" class="col-xs-12 col-form-label">
+            {{local.MONTHLY}} <input [(ngModel)]="entry.monthly" type="checkbox" id="entry-monthly">
+          </label>
+        </div>
+        <div class="form-group col-xs-6">
+          <label for="entry-income" class="col-xs-12 col-form-label">
+            {{local.INCOME}} <input [(ngModel)]="entry.income" type="checkbox" id="entry-income">
+          </label>
+        </div>
+      </div>
+    </div>
+    <p class="text-muted">{{local.REQUIRED_INFO}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="createEntry()">{{local.CREATE}}</button>
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">{{local.CLOSE}}</button>
+  </div>
+</template>
+
+<button class="btn btn-sm btn-primary" (click)="open(content)">{{local.NEW_ENTRY}}</button>

@@ -11,7 +11,7 @@ export class Entry {
   public income : boolean;
 
   constructor(pId? : number, pDescription? : string, pValue? : number, pDate? : Date, pMonthly? : boolean, pEndDate? : Date, pIncome? : boolean, pBudget? : Budget) {
-    this.id = pId || Math.random();
+    this.id = pId || 1;
     this.description = pDescription || null;
     this.value = pValue || null;
     this.date = pDate || new Date();

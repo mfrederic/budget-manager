@@ -22,29 +22,20 @@ export class BudgetService {
     return this.budgets;
   }
 
-  getBudget(pId : number) : Budget {
-    return _.find(this.budgets, function(budget) {
-      return budget.id === pId;
+  getBudget(pId : number) : Promise<Budget> {
+    return new Promise((resolve, reject) => {
+      let budget : Budget = _.find(this.budgets, function(budget) {
+        return budget.id === pId;
+      });
+      resolve(budget);
     });
-  }
-
-  addEntry(pBudgetId : number, pEntry : Entry) : boolean {
-    let response = false;
-    let index : number = _.findIndex(this.budgets, (budget) => {
-      return budget.id === pBudgetId;
-    });
-    if(index !== -1) {
-      this.budgets[index].entries.push(pEntry);
-      response = true;
-    }
-    return response;
   }
 
   createCurrentBudget(pDescription? : string, pStartDate? : Date, pEndDate? : Date) : Budget {
     pDescription = (_.isEmpty(pDescription)) ? i18n.BUDGET_DEFAULT_DESCRIPTION : pDescription;
     pStartDate = (_.isEmpty(pStartDate)) ? moment().startOf('month').toDate() : pStartDate;
     pEndDate = (_.isEmpty(pEndDate)) ? moment().endOf('month').toDate() : pEndDate;
-    let newCurrentBudget = new Budget(this.budgets.length+1, pDescription, pStartDate, pEndDate, []);
+    let newCurrentBudget = new Budget(this.budgets.length+1, pDescription, pStartDate, pEndDate);
     this.budgets.push(newCurrentBudget);
     return newCurrentBudget;
   }
@@ -62,10 +53,10 @@ export class BudgetService {
     });
   }
 
-  getIncome(pBudget : Budget) : number {
+  getIncome(pEntries : Entry[]) : number {
     let income : number = 0;
-    if(!_.isEmpty(pBudget)) {
-      pBudget.entries.forEach(function(entry, index) {
+    if(!_.isEmpty(pEntries)) {
+      pEntries.forEach(function(entry, index) {
         if(entry.income) {
           let value = parseFloat(entry.value.toString());
           income += value;
@@ -75,10 +66,10 @@ export class BudgetService {
     return income;
   }
 
-  getExpenses(pBudget : Budget) : number {
+  getExpenses(pEntries : Entry[]) : number {
     let expense : number = 0;
-    if(!_.isEmpty(pBudget)) {
-      pBudget.entries.forEach(function(entry, index) {
+    if(!_.isEmpty(pEntries)) {
+      pEntries.forEach(function(entry, index) {
         if(!entry.income) {
           let value = parseFloat(entry.value.toString());
           expense += value;
@@ -88,10 +79,10 @@ export class BudgetService {
     return expense;
   }
 
-  getBalance(pBudget : Budget) : number {
+  getBalance(pEntries : Entry[]) : number {
     let balance : number = 0;
-    if(!_.isEmpty(pBudget)) {
-      pBudget.entries.forEach(function(entry, index) {
+    if(!_.isEmpty(pEntries)) {
+      pEntries.forEach(function(entry, index) {
         let value = parseFloat(entry.value.toString());
         if(entry.income) {
           balance += value;

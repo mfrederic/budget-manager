@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { Entry } from '../classes/entry';
 import { Budget } from '../classes/budget';
 
@@ -11,11 +12,38 @@ import { i18n } from '../localization';
 @Injectable()
 export class EntryService {
   @LocalStorage('budgetEntry') private entries : Entry[] = [];
+  private updateEntrySource = new Subject<boolean>();
+
+  public updateEntry$ = this.updateEntrySource.asObservable();
 
   constructor() {}
 
+  public annonceUpdate() {
+    this.updateEntrySource.next(true);
+  }
+
+  getResponseInformations(pCode : number) : any {
+    let response = {
+      error: true,
+      message: null,
+      code: pCode
+    }
+    switch(pCode) {
+      case 200: response.message = i18n.HTTP_OK; response.error = false;
+        break;
+      case 400: response.message = i18n.HTTP_BAD_REQUEST;
+        break;
+      case 409: response.message = i18n.HTTP_CONFLICT;
+        break;
+      default: response.message = i18n.HTTP_SERVER_ERROR;
+        break;
+    }
+    return response;
+  }
+
   resetEntries() : void {
     this.entries = [];
+    this.annonceUpdate();
   }
 
   getEntries() : Entry[] {
@@ -40,17 +68,18 @@ export class EntryService {
   }
 
   /** Create an entry form an Entry instance */
-  createEntry(entry : Entry) : boolean {
+  createEntry(entry : Entry) : number {
     let _this = this;
-    let result = false;
+    let result = 500;
     if(!_.isEmpty(_.find(this.entries, function(e) { return _this.equals(e, entry) }))) {
-      console.error("Already existing entry");
-    } else if(_.isEmpty(entry.value) || !moment(entry.date).isValid()) {
-      console.log(_.isEmpty(entry.value), _.isEmpty(entry.date));
-      console.error("Some informations are missing");
+      result = 409;
+    } else if(_.lte(entry.value, 0) || _.isNull(entry.value) || !moment(entry.date).isValid()) {
+      result = 400;
     } else {
+      entry.id = this.entries.length+1;
       this.entries.push(entry);
-      result = true;
+      this.annonceUpdate();
+      result = 200;
     }
     return result;
   }
@@ -61,6 +90,7 @@ export class EntryService {
     if(this.entries.splice(index, 1).length === before) {
       return false;
     } else {
+      this.annonceUpdate();
       return true;
     }
   }
