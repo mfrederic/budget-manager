@@ -1,11 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <nav class="navbar navbar-light bg-faded">
+      <nav class="navbar navbar-dark bg-inverse">
         <a class="navbar-brand" href="#/">{{local.SITE_NAME}}</a>
         <ul class="nav navbar-nav">
           <li *ngFor="let item of items; let i = index;" [ngClass]="{'nav-item':true, 'active':item.isActive()}">
             <a class="nav-link" target="{{item.getTarget()}}" routerLinkActive="active" routerLink="{{item.getUrl()}}">{{local[item.getText()]}} <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item float-xs-right">
+            <ngbd-modal-settings></ngbd-modal-settings>
           </li>
         </ul>
       </nav>

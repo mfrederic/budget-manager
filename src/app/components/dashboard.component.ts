@@ -5,17 +5,19 @@ import * as moment from 'moment';
 
 import { EntryService } from '../services/entry.service';
 import { BudgetService } from '../services/budget.service';
+import { SettingsService } from '../services/settings.service';
 import { Budget } from '../classes/budget';
 
 @Component({
   templateUrl: './views/dashboard.component.html',
-  providers: [EntryService, BudgetService]
+  providers: [SettingsService, EntryService, BudgetService]
 })
 export class DashboardComponent {
   public local : any = null;
   public budget : Budget = null;
+  public budgetStartDay : string = null;
 
-  constructor(private entryService : EntryService, private budgetService : BudgetService) {
+  constructor(private settingsService : SettingsService, private entryService : EntryService, private budgetService : BudgetService) {
     this.local = i18n;
     this.loadBudgetData();
 
@@ -30,6 +32,7 @@ export class DashboardComponent {
     this.budgetService.getCurrentBudget().then(function(data) {
       context.budget = data;
     });
+    this.budgetStartDay = this.settingsService.getSetting('S_START_BUDGET_DATE');
   }
 
   buildDate(pDate : string) : Date {

@@ -1,0 +1,25 @@
+<template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{local.SETTINGS}}</h4>
+  </div>
+  <div class="modal-body" *ngIf="!_.isEmpty(settings)">
+    <div *ngFor="let setting of settings; let in=index" class="form-group row">
+      <label for="{{setting.name}}" class="col-xs-4 col-form-label">{{local[setting.name]}}</label>
+      <div class="col-xs-8">
+        <input [(ngModel)]="settings[in].value" class="form-control"
+          type="{{getInputType(setting)}}" id="{{setting.name}}">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d('Close click')">{{local.CLOSE}}</button>
+    <button type="button" class="btn btn-primary" (click)="c('Save click')">{{local.SAVE}}</button>
+  </div>
+</template>
+
+<a class="nav-link btn" title="{{local.SETTINGS}}" (click)="open(content)">
+  <i class="fa fa-cog" aria-hidden="true"></i>
+</a>

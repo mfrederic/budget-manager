@@ -37,7 +37,7 @@
       <div class="row">
         <div class="form-group col-xs-6">
           <label for="entry-monthly" class="col-xs-12 col-form-label">
-            {{local.MONTHLY}} <input [(ngModel)]="entry.monthly" type="checkbox" id="entry-monthly">
+            {{local.MONTHLY}} <input data-toggle="button" [(ngModel)]="entry.monthly" type="checkbox" id="entry-monthly">
           </label>
         </div>
         <div class="form-group col-xs-6">
@@ -50,9 +50,9 @@
     <p class="text-muted">{{local.REQUIRED_INFO}}</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="createEntry()">{{local.CREATE}}</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">{{local.CLOSE}}</button>
+    <button type="button" class="btn btn-primary" (click)="createEntry()">{{local.CREATE}}</button>
   </div>
 </template>
 
-<button class="btn btn-sm btn-primary" (click)="open(content)">{{local.NEW_ENTRY}}</button>
+<button class="btn btn-sm btn-outline-primary" (click)="open(content)">{{local.NEW_ENTRY}}</button>

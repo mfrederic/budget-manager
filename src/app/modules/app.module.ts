@@ -14,6 +14,8 @@ import { BalanceComponent } from '../components/balance.component';
 import { TrendComponent } from '../components/trend.component';
 import { LastEntryComponent } from '../components/last-entry.component';
 import { NgbdModalNewEntry } from '../components/ngbd-modal-new-entry.component';
+import { NgbdModalSettings } from '../components/ngbd-modal-settings.component';
+import { NgbdModalBudget } from '../components/ngbd-modal-budget.component';
 
 import { LocalStorageService } from '../../../node_modules/angular2-localstorage/LocalStorageEmitter';
 import { SettingsService } from '../services/settings.service';
@@ -33,6 +35,8 @@ const appRoutes: Routes = [
     TrendComponent,
     LastEntryComponent,
     NgbdModalNewEntry,
+    NgbdModalSettings,
+    NgbdModalBudget,
     BudgetsComponent,
     BudgetComponent
   ],

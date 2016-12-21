@@ -1,3 +1,11 @@
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="navbar navbar-light bg-faded">
+          <span class="navbar-text">{{local.BUDGET_START_EVERY_DAY}} {{budgetStartDay.value}}</span>
+        </div>
+      </div>
+    </div>
+
     <div class="row" *ngIf="budget !== null">
       <div class="col-xs-12 col-md-4">
         <balance [budget]="budget"></balance>

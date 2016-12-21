@@ -85,8 +85,9 @@ export class EntryService {
   }
 
   /** Delete an entry from Entry instance */
-  deleteEntry(index : number) : boolean {
+  deleteEntry(pEntryId : number) : boolean {
     let before : number = this.entries.length;
+    let index = _.findIndex(this.entries, (entry) => entry.id === pEntryId);
     if(this.entries.splice(index, 1).length === before) {
       return false;
     } else {

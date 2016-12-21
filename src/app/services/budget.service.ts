@@ -31,6 +31,11 @@ export class BudgetService {
     });
   }
 
+  updateBudget(pBudget : Budget) : void {
+    let index = _.findIndex(this.budgets, (budget) => budget.id === pBudget.id);
+    this.budgets[index] = pBudget;
+  }
+
   createCurrentBudget(pDescription? : string, pStartDate? : Date, pEndDate? : Date) : Budget {
     pDescription = (_.isEmpty(pDescription)) ? i18n.BUDGET_DEFAULT_DESCRIPTION : pDescription;
     pStartDate = (_.isEmpty(pStartDate)) ? moment().startOf('month').toDate() : pStartDate;

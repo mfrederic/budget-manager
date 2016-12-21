@@ -1,7 +1,10 @@
 <div class="row" *ngIf="budget !== null">
   <div class="col-xs-12">
     <nav class="navbar navbar-light bg-faded">
-      <h1 class="navbar-brand mb-0">{{budget.description}}</h1>
+      <h1 class="navbar-brand mb-0">{{budget.description}}
+        <small class="text-muted">{{local.START_DATE}} {{moment(budget.startDate).format(local.DATE_FORMAT)}}</small>
+      </h1>
+      <ngbd-modal-budget [budget]="budget" class="float-xs-right"></ngbd-modal-budget>
     </nav>
   </div>
 </div>
@@ -15,15 +18,33 @@
   </div>
 </div>
 
+<div class="row" *ngIf="notification.message !== null">
+  <div class="col-xs-12">
+    <div class="alert alert-{{notification.type}} alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{notification.message}}
+    </div>
+  </div>
+</div>
+
 <div class="row" *ngIf="entries.length > 0">
   <div class="col-xs-12">
     <div class="card text-xs">
-      <div class="card-header">{{local.OPERATIONS}}</div>
+      <div class="card-header">
+        {{local.OPERATIONS}} <span class="text-muted">: {{entries.length}}</span>
+        <div class="float-xs-right">
+          <ngbd-modal-new-entry></ngbd-modal-new-entry>
+          <button *ngIf="thereIsSelectedEntry()" class="btn btn-sm btn-outline-warning"
+            (click)="openDeletionModal(content, getSelectedEntries())">{{local.DELETE}}</button>
+        </div>
+      </div>
       <div class="card-block">
         <table class="table table-stripped table-sm">
           <thead>
             <tr>
-              <th>#</th>
+              <th><input [(ngModel)]="allSelected" type="checkbox" (click)="toggleChecked()" /></th>
               <th>{{local.DESCRIPTION}}</th>
               <th>{{local.DATE}}</th>
               <th>{{local.VALUE}}</th>
@@ -33,14 +54,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let entry of entries;" [ngClass]="{'table-success' : entry.income}">
-              <td></td>
+            <tr *ngFor="let entry of entries; let in=index;" [ngClass]="{'table-success' : entry.income}">
+              <td><input [(ngModel)]="entries[in].selected" type="checkbox" /></td>
               <td>{{entry.description}}</td>
               <td>{{moment(entry.date).format('DD/MM')}}</td>
               <td>{{entry.value}}{{local.CURRENCY}}</td>
               <td><i [ngClass]="{'fa-arrow-up' : entry.income, 'fa-arrow-down' : !entry.income}" class="fa" aria-hidden="true"></i></td>
               <td><i [ngClass]="{'fa-repeat' : entry.monthly}" *ngIf="entry.monthly" class="fa" aria-hidden="true" title="{{local.MONTHLY}}"></i></td>
-              <td></td>
+              <td>
+                <div class="dropdown text-xs-right">
+                  <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">{{local.ACTIONS}}</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item" >{{local.UPDATE}}</button>
+                    <button class="dropdown-item" (click)="openDeletionModal(content, [entry])">{{local.DELETE}}</button>
+                  </div>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -49,3 +80,20 @@
     </div>
   </div>
 </div>
+
+<template ngbModalContainer #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{local.CONFIRM_SUPPRESS_TITLE}}</h4>
+  </div>
+  <div class="modal-body text-danger">
+    <p *ngIf="thereIsSelectedEntry()">{{getSelectedEntries().length}} {{local.SELECTED_ENTRIES}}</p>
+    {{local.CONFIRM_SUPPRESS_MESSAGE}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d('Close click')">{{local.CANCEL}}</button>
+    <button type="button" class="btn btn-primary" (click)="c('Delete')">{{local.CONFIRM}}</button>
+  </div>
+</template>
