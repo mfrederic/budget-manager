@@ -96,6 +96,16 @@ export class EntryService {
     }
   }
 
+  updateEntry(pId : number, pEntry : Entry) : Entry {
+    let index : number = _.findIndex(this.entries, (entry) => entry.id === pId);
+    if(index < 0) {
+      return null;
+    } else {
+      this.entries[index] = pEntry;
+      return pEntry;
+    }
+  }
+
   equals(pEntry1 : Entry, pEntry2 : Entry) : boolean {
     let isEquals = false;
     if(pEntry2.description === pEntry1.description

@@ -42,7 +42,7 @@ export class NgbdModalNewEntry {
   }
 
   open(content) {
-    this.modalService.open(content).result.then((result) => true, (reason) => console.error(reason));
+    this.modalService.open(content).result.then((result) => true, (reason) => true);
   }
 
   createEntry() : void {

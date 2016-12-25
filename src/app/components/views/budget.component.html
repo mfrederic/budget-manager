@@ -37,7 +37,7 @@
         <div class="float-xs-right">
           <ngbd-modal-new-entry></ngbd-modal-new-entry>
           <button *ngIf="thereIsSelectedEntry()" class="btn btn-sm btn-outline-warning"
-            (click)="openDeletionModal(content, getSelectedEntries())">{{local.DELETE}}</button>
+            (click)="openDeletionModal(contentDelete, getSelectedEntries())">{{local.DELETE}}</button>
         </div>
       </div>
       <div class="card-block">
@@ -53,8 +53,8 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr *ngFor="let entry of entries; let in=index;" [ngClass]="{'table-success' : entry.income}">
+          <tbody *ngFor="let entry of entries; let in=index;" >
+            <tr [ngClass]="{'table-success' : entry.income}">
               <td><input [(ngModel)]="entries[in].selected" type="checkbox" /></td>
               <td>{{entry.description}}</td>
               <td>{{moment(entry.date).format('DD/MM')}}</td>
@@ -67,8 +67,58 @@
                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">{{local.ACTIONS}}</button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <button class="dropdown-item" >{{local.UPDATE}}</button>
-                    <button class="dropdown-item" (click)="openDeletionModal(content, [entry])">{{local.DELETE}}</button>
+                    <button class="dropdown-item" (click)="openUpdate(entry)">{{local.UPDATE}}</button>
+                    <button class="dropdown-item" (click)="openDeletionModal(contentDelete, [entry])">{{local.DELETE}}</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="updatedEntry(entry)">
+              <td colspan="7">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="card card-outline-primary text-xs">
+                      <div class="card-header">{{local.UPDATE}}</div>
+                      <div class="card-block">
+                        <div class="form-group row">
+                          <label for="entry-description" class="col-xs-3 col-form-label">{{local.DESCRIPTION}} {{local.REQUIRED_MARK}}</label>
+                          <div class="col-xs-9">
+                            <input [(ngModel)]="entryToUpdate.description" class="form-control"
+                              type="text" placeholder="{{local.ENTRY_DEFAULT_DESCRIPTION}}" id="entry-description">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="entry-date-update" class="col-xs-3 col-form-label">{{local.DATE}} {{local.REQUIRED_MARK}}</label>
+                            <div class="col-xs-9">
+                              <input (click)="d.toggle()" [(ngModel)]="entryToUpdateDate" class="form-control"
+                                type="text" placeholder="{{local.CURRENT_DATE}}" id="entry-date-update" ngbDatepicker #d="ngbDatepicker">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="entry-value" class="col-xs-3 col-form-label">{{local.VALUE}} {{local.REQUIRED_MARK}}</label>
+                          <div class="col-xs-9">
+                            <input [(ngModel)]="entryToUpdate.value" class="form-control"
+                              type="number" placeholder="{{local.EXAMPLE}}: {{local.EXAMPLE_VALUE}}" id="entry-value">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-xs-6">
+                            <label for="entry-monthly" class="col-xs-12 col-form-label">
+                              {{local.MONTHLY}} <input data-toggle="button" [(ngModel)]="entryToUpdate.monthly" type="checkbox" id="entry-monthly">
+                            </label>
+                          </div>
+                          <div class="form-group col-xs-6">
+                            <label for="entry-income" class="col-xs-12 col-form-label">
+                              {{local.INCOME}} <input [(ngModel)]="entryToUpdate.income" type="checkbox" id="entry-income">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        <button class="btn btn-primary" (click)="updateEntry()" title="{{local.UPDATE}}">{{local.UPDATE}}</button>
+                        <button class="btn" (click)="closeUpdate()" title="{{local.CANCEL}}">{{local.CANCEL}}</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -76,12 +126,59 @@
           </tbody>
         </table>
       </div>
-      <div class="card-footer"></div>
     </div>
   </div>
 </div>
 
-<template ngbModalContainer #content let-c="close" let-d="dismiss">
+<template ngbModalContainer #contentUpdate let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{local.UPDATE}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label for="entry-description" class="col-xs-3 col-form-label">{{local.DESCRIPTION}} {{local.REQUIRED_MARK}}</label>
+      <div class="col-xs-9">
+        <input [(ngModel)]="entryToUpdate.description" class="form-control"
+          type="text" placeholder="{{local.ENTRY_DEFAULT_DESCRIPTION}}" id="entry-description">
+      </div>
+    </div>
+    <div class="form-group row">
+        <label for="entry-date-update" class="col-xs-3 col-form-label">{{local.DATE}} {{local.REQUIRED_MARK}}</label>
+        <div class="col-xs-9">
+          <input (click)="d.toggle()" [(ngModel)]="entryToUpdateDate" class="form-control"
+            type="text" placeholder="{{local.CURRENT_DATE}}" id="entry-date-update" ngbDatepicker #d="ngbDatepicker">
+        </div>
+    </div>
+    <div class="form-group row">
+      <label for="entry-value" class="col-xs-3 col-form-label">{{local.VALUE}} {{local.REQUIRED_MARK}}</label>
+      <div class="col-xs-9">
+        <input [(ngModel)]="entryToUpdate.value" class="form-control"
+          type="number" placeholder="{{local.EXAMPLE}}: {{local.EXAMPLE_VALUE}}" id="entry-value">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-xs-6">
+        <label for="entry-monthly" class="col-xs-12 col-form-label">
+          {{local.MONTHLY}} <input data-toggle="button" [(ngModel)]="entryToUpdate.monthly" type="checkbox" id="entry-monthly">
+        </label>
+      </div>
+      <div class="form-group col-xs-6">
+        <label for="entry-income" class="col-xs-12 col-form-label">
+          {{local.INCOME}} <input [(ngModel)]="entryToUpdate.income" type="checkbox" id="entry-income">
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d('Close click')">{{local.CANCEL}}</button>
+    <button type="button" class="btn btn-primary" (click)="c('Update click')">{{local.UPDATE}}</button>
+  </div>
+</template>
+
+<template ngbModalContainer #contentDelete let-c="close" let-d="dismiss">
   <div class="modal-header">
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>

@@ -60,6 +60,8 @@ export const i18n = {
   TREND: 'Tendance',
   UPDATE: 'Mettre à jour',
   UPDATE_BUDGET: 'Mettre à jour le budget',
+  UPDATE_ERROR: 'Erreur de mise à jour de l\'entrée.',
+  UPDATE_SUCCESS: 'Succès de mise à jour de l\'entrée.',
   VALUE: 'Valeur',
   WRONG_ENTRY_TYPE_EXCEPTION: 'Le type d\'entrée que vous souhaitez enregistrer n\'est pas du bon type.'
 }

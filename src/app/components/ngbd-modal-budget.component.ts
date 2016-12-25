@@ -7,10 +7,12 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { Budget } from '../classes/budget';
+import { DatePickerI18nService } from '../services/date-picker-i18n.service';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'ngbd-modal-budget',
-  providers: [BudgetService],
+  providers: [BudgetService, SettingsService, {provide: NgbDatepickerI18n, useClass: DatePickerI18nService}],
   templateUrl: './views/ngbd-modal-budget.component.html'
 })
 export class NgbdModalBudget implements OnInit {
@@ -21,7 +23,7 @@ export class NgbdModalBudget implements OnInit {
   public notification : any;
   public budgetDate : any;
 
-  constructor(private modalService: NgbModal, private budgetService : BudgetService) {
+  constructor(private modalService: NgbModal, private _i18n: SettingsService, private budgetService : BudgetService) {
     this.local = i18n;
     this._ = _;
     this.budgetDate = null;
@@ -35,9 +37,17 @@ export class NgbdModalBudget implements OnInit {
     let startDate = new Date(this.budget.startDate);
     this.budgetDate = {
       year: startDate.getFullYear(),
-      month: startDate.getMonth(),
-      day: startDate.getDay()
+      month: startDate.getMonth()+1,
+      day: startDate.getDate()
     };
+  }
+
+  set language(language: string) {
+    this._i18n.language = language;
+  }
+
+  get language() {
+    return this._i18n.language;
   }
 
   open(content) {
